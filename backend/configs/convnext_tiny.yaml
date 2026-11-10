@@ -1,0 +1,26 @@
+# ConvNeXt-Tiny configuration
+# Stretch goal: ~28M params, strongest but tightest VRAM
+
+# Inherit base config
+_base_: base.yaml
+
+# Model
+model:
+  name: "convnext_tiny"
+  pretrained: true
+  drop_path_rate: 0.1
+
+# DataLoader (small batch + accumulation)
+dataloader:
+  batch_size: 20
+  
+# Training
+training:
+  grad_accumulation_steps: 3  # Effective batch = 60
+  gradient_checkpointing: true  # Save VRAM at cost of speed
+  
+  # Slightly lower LR for ConvNeXt
+  stage2_lr: 1.0e-4
+
+# Experiment name
+experiment_name: "convnext_tiny_baseline"

@@ -1,0 +1,6 @@
+# Auto-generated for FR-T10 comparison
+# NOTE: _base_ paths resolve relative to THIS file's directory
+_base_: ../convnext_tiny.yaml
+
+seed: 43
+experiment_name: "convnext_tiny_seed43"

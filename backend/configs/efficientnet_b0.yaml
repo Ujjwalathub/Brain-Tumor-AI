@@ -1,0 +1,24 @@
+# EfficientNet-B0 configuration
+# Primary baseline: ~5M params, best accuracy per VRAM
+
+# Inherit base config
+_base_: base.yaml
+
+# Model
+model:
+  name: "efficientnet_b0"
+  pretrained: true
+  drop_rate: 0.2
+  drop_path_rate: 0.2
+
+# DataLoader (optimized for this model)
+dataloader:
+  batch_size: 64
+  
+# Training
+training:
+  grad_accumulation_steps: 1  # Effective batch = 64
+  gradient_checkpointing: false
+
+# Experiment name
+experiment_name: "efficientnet_b0_baseline"

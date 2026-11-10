@@ -1,0 +1,5 @@
+class,tissue_frac_top,tissue_frac_bottom,mean_top,mean_bottom
+glioma,0.52490,0.58212,0.15718,0.14912
+meningioma,0.53120,0.65682,0.19033,0.19174
+notumor,0.46976,0.51479,0.19311,0.21032
+pituitary,0.54466,0.64543,0.18224,0.18038

@@ -1,0 +1,22 @@
+{
+  "manifest": "E:\\Brain\\backend\\data\\processed\\manifest.csv",
+  "total_rows": 7200,
+  "unique_content": 6874,
+  "duplicate_groups": 278,
+  "duplicate_rows": 326,
+  "cross_split_groups": 156,
+  "cross_split_rows": 336,
+  "group_counts_by_pair": {
+    "train-val": 49,
+    "train-test": 95,
+    "val-test": 18
+  },
+  "test_rows": 1600,
+  "leaked_test_rows": 114,
+  "clean_test_rows": 1486,
+  "leaked_test_by_class": {
+    "meningioma": 100,
+    "notumor": 9,
+    "glioma": 5
+  }
+}

@@ -1,0 +1,77 @@
+# Base configuration for brain tumor classification
+# Hardware: RTX 3050 6GB, CUDA-only training
+
+seed: 42
+device: cuda
+
+# Data
+data:
+  raw_dir: "Dataset"  # Relative to workspace root
+  processed_dir: "data/processed"
+  img_size: 224
+  num_classes: 4
+  classes: ["glioma", "meningioma", "notumor", "pituitary"]
+  train_val_split: 0.85
+  
+# DataLoader
+dataloader:
+  batch_size: 64  # Override per model
+  num_workers: 4
+  pin_memory: true
+  persistent_workers: true
+  prefetch_factor: 2
+
+# Training
+training:
+  epochs: 30
+  warmup_epochs: 2
+  early_stopping_patience: 5
+  grad_accumulation_steps: 1
+  label_smoothing: 0.1
+  
+  # Two-stage training
+  stage1_epochs: 5  # Head only
+  stage1_lr: 1.0e-3
+  
+  stage2_lr: 3.0e-4  # Full fine-tune
+  weight_decay: 1.0e-4
+  
+  # Optimization
+  use_amp: true  # Mixed precision
+  amp_dtype: "float16"  # or "bfloat16" for Ampere
+  channels_last: true
+  gradient_checkpointing: false
+  
+# Scheduler
+scheduler:
+  type: "cosine"  # cosine, step, plateau
+  min_lr: 1.0e-6
+
+# Augmentation
+augmentation:
+  # Training augmentations
+  rotation_degrees: 15
+  horizontal_flip_prob: 0.5
+  brightness: 0.2
+  contrast: 0.2
+  saturation: 0.0
+  hue: 0.0
+  
+  # Normalization (ImageNet stats for pretrained models)
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+
+# Logging
+logging:
+  tensorboard_dir: "runs"
+  checkpoint_dir: "models"
+  save_top_k: 3
+  metric_to_monitor: "val_macro_recall"
+  mode: "max"
+  log_every_n_steps: 10
+
+# Evaluation
+evaluation:
+  batch_size: 128
+  compute_gradcam: true
+  gradcam_samples_per_class: 5

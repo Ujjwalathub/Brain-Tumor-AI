@@ -1,0 +1,35 @@
+Border Ablation Test Report
+======================================================================
+Checkpoint: models\best_epoch019_macro-recall0.9929.pth
+Split: val | Images: 840
+
+[none] Baseline, no masking
+  glioma      :  99.05%
+  meningioma  :  98.10%
+  notumor     : 100.00%
+  pituitary   : 100.00%
+
+[bottom] Bottom 20% rows zeroed (facial band)
+  glioma      :  98.10%
+  meningioma  :  98.10%
+  notumor     : 100.00%
+  pituitary   : 100.00%
+
+[top] Top 20% rows zeroed
+  glioma      :  91.43%
+  meningioma  :  96.67%
+  notumor     : 100.00%
+  pituitary   : 100.00%
+
+[top_bottom] Top and bottom 20% zeroed
+  glioma      :  69.05%
+  meningioma  :  96.19%
+  notumor     : 100.00%
+  pituitary   :  99.52%
+
+[all_borders] All four borders, 10% each, zeroed
+  glioma      :  76.67%
+  meningioma  :  98.10%
+  notumor     : 100.00%
+  pituitary   :  98.10%
+

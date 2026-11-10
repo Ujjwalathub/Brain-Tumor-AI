@@ -1,0 +1,23 @@
+# ResNet50 configuration
+# Standard comparison baseline: ~25M params
+
+# Inherit base config
+_base_: base.yaml
+
+# Model
+model:
+  name: "resnet50"
+  pretrained: true
+  drop_rate: 0.0
+
+# DataLoader (reduced batch for larger model)
+dataloader:
+  batch_size: 32
+  
+# Training
+training:
+  grad_accumulation_steps: 2  # Effective batch = 64
+  gradient_checkpointing: false
+
+# Experiment name
+experiment_name: "resnet50_baseline"

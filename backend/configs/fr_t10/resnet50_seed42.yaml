@@ -1,0 +1,6 @@
+# Auto-generated for FR-T10 comparison
+# NOTE: _base_ paths resolve relative to THIS file's directory
+_base_: ../resnet50.yaml
+
+seed: 42
+experiment_name: "resnet50_seed42"

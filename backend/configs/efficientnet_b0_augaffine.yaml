@@ -1,0 +1,49 @@
+# EfficientNet-B0 — stronger spatial augmentation run (Stage: response to
+# Stage 9 gate finding). The baseline (test acc 0.9581) is sensitive to
+# vertical crop offsets in glioma scans: glioma recall 0.853 with 0.997
+# precision, glioma→meningioma/notumor drift under source shift.
+# This run adds random translation (±8%) alongside rotation and keeps
+# EfficientNet-B0's speed on RTX 3050 6GB for fast iteration.
+#
+# Offline checks first rule out cheaper wins (see src/debug_ensemble_tta.py):
+# hflip-TTA and EffNet+ResNet50 ensembling do NOT beat the baseline
+# (0.9569 / 0.9563 best vs 0.9581), so retraining is the right lever.
+
+_base_: base.yaml
+
+# Model (unchanged from baseline)
+model:
+  name: "efficientnet_b0"
+  pretrained: true
+  drop_rate: 0.2
+  drop_path_rate: 0.2
+
+dataloader:
+  # 2x32 with grad accumulation = effective batch 64 (OOM-safe: Stage 2
+  # unfreezing doubles activation memory; the RTX 3050 shared desktop
+  # allocation OOM'd at batch 64 in the first attempt).
+  batch_size: 32
+  # Pinned host memory + expandable_segments conflicted during validation
+  # (cudaErrorAlreadyMapped / host paging exhaustion on this laptop).
+  pin_memory: false
+  num_workers: 2
+
+# Longer schedule: spatial aug needs more epochs to converge; more patience
+# for the noisier augmented training curve.
+training:
+  epochs: 40
+  early_stopping_patience: 8
+  grad_accumulation_steps: 2  # effective batch = 64
+
+augmentation:
+  rotation_degrees: 15
+  horizontal_flip_prob: 0.5
+  # Random translation as fraction of image size (Stage 9 recommendation)
+  translate: [0.08, 0.08]
+  brightness: 0.2
+  contrast: 0.2
+
+logging:
+  checkpoint_dir: "models/run_augaffine"
+
+experiment_name: "efficientnet_b0_augaffine"
